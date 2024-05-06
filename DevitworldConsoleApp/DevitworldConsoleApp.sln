@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HelloWorld", "HelloWorld\He
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "3_BasicSyntax", "3_BasicSyntax\3_BasicSyntax.csproj", "{3266EF8A-F7A7-4EC9-8FD9-47E893EC4C70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "4_FunctionMethod", "4_FunctionMethod\4_FunctionMethod.csproj", "{4F4FB2AA-A3D1-42CF-B835-7C7A8EC07E0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "4_FunctionMethod", "4_FunctionMethod\4_FunctionMethod.csproj", "{4F4FB2AA-A3D1-42CF-B835-7C7A8EC07E0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5_Class", "5_Class\5_Class.csproj", "{AA972842-FD5C-496A-95CA-6BFFB3D6297C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{4F4FB2AA-A3D1-42CF-B835-7C7A8EC07E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F4FB2AA-A3D1-42CF-B835-7C7A8EC07E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F4FB2AA-A3D1-42CF-B835-7C7A8EC07E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA972842-FD5C-496A-95CA-6BFFB3D6297C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA972842-FD5C-496A-95CA-6BFFB3D6297C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA972842-FD5C-496A-95CA-6BFFB3D6297C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA972842-FD5C-496A-95CA-6BFFB3D6297C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
