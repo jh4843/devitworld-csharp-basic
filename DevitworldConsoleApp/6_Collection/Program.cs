@@ -2,6 +2,20 @@
 
 namespace Collection
 {
+    enum Day { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
+
+    struct Point
+    {
+        public int X;
+        public int Y;
+
+        public Point(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+    }
+
     class Program
     {
         static void Main(string[] args)
@@ -46,8 +60,7 @@ namespace Collection
             stack.Push("First");
             stack.Push("Second");
             stack.Push("Third");
-
-            // 스택 요소 출력 및 제거
+            
             while (stack.Count > 0)
             {
                 Console.WriteLine(stack.Pop());
@@ -75,6 +88,36 @@ namespace Collection
                 Console.WriteLine($"The capital of {item.Key} is {item.Value}");
             }
 
+            // Enum Example
+            Console.WriteLine("\r\n## Enum Example ##");
+            Day today = Day.Wednesday;
+            Console.WriteLine($"Today is {today} {((int)today)}");
+
+            // Structure Example
+            Console.WriteLine("\r\n## Structure Example ##");
+            Point point = new Point(10, 20);
+            Console.WriteLine($"Point Coordinates X: {point.X}, Y: {point.Y}");
+
+            // LINQ Example
+            // LINQ (Query Syntax) Example
+            Console.WriteLine("\r\n## LINQ Example (Query Syntax) ##");
+            int[] nums = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            var evenNumbers = from num in nums
+                              where num % 2 == 0
+                              select num;
+
+            foreach (var num in evenNumbers)
+            {
+                Console.WriteLine(num); // Outputs even numbers: 0, 2, 4, 6, 8
+            }
+
+            // LINQ (Method Syntax) Example
+            Console.WriteLine("\r\n## LINQ Example (Method Syntax) ##");
+            var oddNumbers = nums.Where(n => n % 2 == 1);
+            foreach (var num in oddNumbers)
+            {
+                Console.WriteLine(num); // Outputs odd numbers: 1, 3, 5, 7, 9
+            }
         }
     }
 }
