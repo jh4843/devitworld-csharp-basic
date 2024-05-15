@@ -1,4 +1,5 @@
 ﻿using System;
+using UseDatabase.Repositories;
 
 namespace UseDatabase
 {
@@ -6,7 +7,12 @@ namespace UseDatabase
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            MySqlAdoNet mySqlAdoNet = new MySqlAdoNet("devitworld_db", "root", "Devitworld!!!!");
+
+            mySqlAdoNet.TestConnection();
+
+
+            Console.WriteLine("Finish the Database Tutorial !!");
         }
     }
 }
