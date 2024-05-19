@@ -39,6 +39,7 @@ namespace UseDatabase.Repositories
         // connection test
         public void TestConnection()
         {
+            // _connectionString = $"server=localhost;database={dbName};user={dbUserName};password={dbPassword};";
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 try
@@ -56,8 +57,35 @@ namespace UseDatabase.Repositories
             }
         }
 
-        public void ExecuteNonQuery(string query)
+        // Get USER ID
+        public int GetUserId(string name)
         {
+            string query = $"SELECT ID FROM USER WHERE NAME = '{name}';";
+
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return reader.GetInt32(0);
+                        }
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        // Create USER table
+        public void CreateUserTable()
+        {
+            string query = $"CREATE TABLE IF NOT EXISTS USER (ID INT PRIMARY KEY AUTO_INCREMENT, NAME VARCHAR(50), AGE INT, EMAIL VARCHAR(50));";
+
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
                 connection.Open();
@@ -67,11 +95,32 @@ namespace UseDatabase.Repositories
                     command.ExecuteNonQuery();
                 }
             }
+
+            Console.WriteLine("USER table created successfully.");
         }
 
-        public List<string> ExecuteQuery(string query)
+        // Create(Insert) USER
+        public void InsertUser(string name, int age, string email)
         {
-            List<string> result = new List<string>();
+            string query = $"INSERT INTO USER (NAME, AGE, EMAIL) VALUES ('{name}', {age}, '{email}');";
+
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            Console.WriteLine("USER inserted successfully.");
+        }
+
+        // Read(SELECT) USER
+        public void ReadAllUsers()
+        {
+            string query = $"SELECT * FROM USER;";
 
             using (MySqlConnection connection = new MySqlConnection(_connectionString))
             {
@@ -83,14 +132,95 @@ namespace UseDatabase.Repositories
                     {
                         while (reader.Read())
                         {
-                            result.Add(reader.GetString(0));
+                            Console.WriteLine($"ID: {reader.GetInt32(0)}, NAME: {reader.GetString(1)}, AGE: {reader.GetInt32(2)}, EMAIL: {reader.GetString(3)}");
                         }
                     }
                 }
             }
-
-            return result;
         }
+
+        // Update USER
+        public void UpdateUser(int id, string name, int age, string email)
+        {
+            string query = $"UPDATE"
+                + $" USER"
+                + $" SET"
+                + $" NAME = '{name}',"
+                + $" AGE = {age},"
+                + $" EMAIL = '{email}'"
+                + $" WHERE"
+                + $" ID = {id};";
+
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            Console.WriteLine("USER updated successfully.");
+
+        }
+
+        // Delete USER
+        public void DeleteUser(int id)
+        {
+            string query = $"DELETE FROM USER WHERE ID = {id};";
+
+            using (MySqlConnection connection = new MySqlConnection(_connectionString))
+            {
+                connection.Open();
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            Console.WriteLine("USER deleted successfully.");
+        }
+
+
+
+
+        //public void ExecuteNonQuery(string query)
+        //{
+        //    using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        //    {
+        //        connection.Open();
+
+        //        using (MySqlCommand command = new MySqlCommand(query, connection))
+        //        {
+        //            command.ExecuteNonQuery();
+        //        }
+        //    }
+        //}
+
+        //public List<string> ExecuteQuery(string query)
+        //{
+        //    List<string> result = new List<string>();
+
+        //    using (MySqlConnection connection = new MySqlConnection(_connectionString))
+        //    {
+        //        connection.Open();
+
+        //        using (MySqlCommand command = new MySqlCommand(query, connection))
+        //        {
+        //            using (MySqlDataReader reader = command.ExecuteReader())
+        //            {
+        //                while (reader.Read())
+        //                {
+        //                    result.Add(reader.GetString(0));
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
 
     }
 }
