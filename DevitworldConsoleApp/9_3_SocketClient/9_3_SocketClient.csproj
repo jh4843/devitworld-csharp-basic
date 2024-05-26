@@ -3,13 +3,9 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
-    <RootNamespace>_9_2_MessageQueueClient</RootNamespace>
+    <RootNamespace>_9_3_SocketClient</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MSMQ.Messaging" Version="1.0.4" />
-  </ItemGroup>
 
 </Project>

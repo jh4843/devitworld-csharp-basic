@@ -1,17 +1,31 @@
 ﻿using System;
 using System.Messaging;
 
-class MessageQueueSender
+namespace MessageQueueReader
 {
-    static void Main(string[] args)
+    class Program
     {
-        if (!MessageQueue.Exists(@".\Private$\TestQueue"))
+        static void Main(string[] args)
         {
-            MessageQueue.Create(@".\Private$\TestQueue");
-        }
+            string queuePath = @".\Private$\devitworld_queue";
+            if (!MessageQueue.Exists(queuePath))
+            {
+                MessageQueue.Create(queuePath);
+            }
 
-        MessageQueue mq = new MessageQueue(@".\Private$\TestQueue");
-        mq.Send("Hello from client!");
-        Console.WriteLine("Message sent to queue.");
+            using (MessageQueue messageQueue = new MessageQueue(queuePath))
+            {
+                while (true)
+                {
+                    Message message = messageQueue.Receive();
+                    message.Formatter = new XmlMessageFormatter(new String[] { "System.String,mscorlib" });
+                    string msg = message.Body.ToString();
+                    Console.WriteLine("Received message: " + msg);
+
+                    if (msg == "shutdown")
+                        break;
+                }
+            }
+        }
     }
 }

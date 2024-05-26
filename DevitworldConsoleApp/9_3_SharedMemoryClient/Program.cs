@@ -2,18 +2,36 @@
 using System.IO.MemoryMappedFiles;
 using System.Text;
 
-class SharedMemoryWriter
+namespace SharedMemoryClient
 {
-    static void Main(string[] args)
+    class Program
     {
-        using (var mmf = MemoryMappedFile.CreateNew("testmap", 1024))
+        static void Main(string[] args)
         {
-            using (var accessor = mmf.CreateViewAccessor())
+            // Open existing shared memory with the name "devitworld_shared_memory"
+            try
             {
-                string message = "Hello from client!";
-                byte[] buffer = Encoding.UTF8.GetBytes(message);
-                accessor.WriteArray(0, buffer, 0, buffer.Length);
-                Console.WriteLine("Message written to shared memory.");
+                using (MemoryMappedFile mmf = MemoryMappedFile.OpenExisting("devitworld_shared_memory"))
+                {
+                    string message = "Hello from client!";
+
+                    while (message != "exit")
+                    {
+                        Console.Write("Enter message: ");
+                        message = Console.ReadLine();
+                        byte[] buffer = Encoding.UTF8.GetBytes(message);
+
+                        using (var accessor = mmf.CreateViewAccessor())
+                        {
+                            accessor.WriteArray(0, buffer, 0, buffer.Length);
+                            Console.WriteLine("Message sent to server.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Failed to open shared memory. " + ex.Message);
             }
         }
     }

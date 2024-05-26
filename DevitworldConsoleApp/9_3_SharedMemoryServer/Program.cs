@@ -1,28 +1,38 @@
 ﻿using System;
 using System.IO.MemoryMappedFiles;
 using System.Text;
+using System.Threading;
 
-class SharedMemoryReader
+namespace SharedMemoryServer
 {
-    static void Main(string[] args)
+    class Program
     {
-        using (var mmf = MemoryMappedFile.OpenExisting("testmap"))
+        static void Main(string[] args)
         {
-            using (var accessor = mmf.CreateViewAccessor())
+            using (MemoryMappedFile mmf = MemoryMappedFile.CreateNew("devitworld_shared_memory", 1024))
             {
+                Console.WriteLine("Shared memory server started.");
+
                 while (true)
                 {
-                    byte[] buffer = new byte[1024];
-                    accessor.ReadArray(0, buffer, 0, buffer.Length);
-                    string message = Encoding.UTF8.GetString(buffer).TrimEnd('\0');
-                    if (!string.IsNullOrEmpty(message))
+                    // Read message from client
+                    using (var accessor = mmf.CreateViewAccessor())
                     {
-                        Console.WriteLine("Received from shared memory: " + message);
-                        // 메모리 초기화
-                        byte[] clearBuffer = new byte[1024];
-                        accessor.WriteArray(0, clearBuffer, 0, clearBuffer.Length);
+                        byte[] buffer = new byte[1024];
+                        accessor.ReadArray(0, buffer, 0, buffer.Length);
+                        string message = Encoding.UTF8.GetString(buffer).TrimEnd('\0');
+                        Console.WriteLine("Received from client: " + message);
+
+                        if (message == "shutdown")
+                        {
+                            break;
+                        }
+
+                        // make empty the shared memory
+                        accessor.WriteArray(0, new byte[1024], 0, 1024);
                     }
-                    System.Threading.Thread.Sleep(1000); // 1초 대기
+
+                    Thread.Sleep(2000);
                 }
             }
         }
